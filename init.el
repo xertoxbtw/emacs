@@ -90,7 +90,7 @@
   (setq switch-window-input-style 'minibuffer))
 
 ;; Org Interface
-(load-file "org-interface.el")
+(load-file "~/.config/emacs/org-interface.el")
 
 ;; Base Configuration
 (load-theme 'dichromacy t)
