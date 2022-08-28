@@ -30,7 +30,7 @@
 
 ;; All the icons
 (use-package 
-  all-the-icons 
+  all-the-icons
   :if (display-graphic-p))
 
 ;; Geiser
@@ -75,12 +75,20 @@
 (use-package orgtbl-aggregate
   :ensure t)
 
-;; Eglot
-(use-package 
-  eglot 
-  :ensure t 
-  :config (add-hook 'c-mode-hook 'eglot-ensure) 
-  (add-hook 'c++-mode-hook 'eglot-ensure))
+;; Lsp Mode
+(use-package lsp-mode
+  :ensure t
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :hook ((c-mode . lsp)
+		 (c++-mode . lsp)
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+;; Company Mode
+(use-package company
+  :ensure t
+  :hook ((lsp-mode . company-mode)))
 
 ;; Switch Window
 (use-package switch-window
@@ -88,6 +96,10 @@
   :bind (("C-x o" . switch-window))
   :config
   (setq switch-window-input-style 'minibuffer))
+
+;; Magit
+(use-package magit
+  :ensure t)
 
 ;; Org Interface
 (load-file "~/.config/emacs/org-interface.el")
