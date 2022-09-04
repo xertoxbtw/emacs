@@ -58,12 +58,6 @@
   :ensure t 
   :config (setq inferior-lisp-program "sbcl"))
 
-;; Clang Format
-(use-package 
-  clang-format 
-  :ensure t 
-  :bind (("M-f" . clang-format-buffer)))
-
 ;; Org Mode
 (setq org-hide-emphasis-markers t)
 (use-package 
@@ -75,6 +69,10 @@
 (use-package orgtbl-aggregate
   :ensure t)
 
+;; C-Sharp Mode
+(use-package csharp-mode
+  :ensure t)
+
 ;; Lsp Mode
 (use-package lsp-mode
   :ensure t
@@ -82,7 +80,9 @@
   (setq lsp-keymap-prefix "C-c l")
   :hook ((c-mode . lsp)
 		 (c++-mode . lsp)
+		 (csharp-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
+  :bind (("M-f" . lsp-format-buffer))
   :commands lsp)
 
 ;; Company Mode
@@ -149,7 +149,7 @@
 		   ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 (setq org-latex-listings 't)
-
+(setq org-latex-toc-command "\\tableofcontents \\clearpage")
 (org-babel-do-load-languages 'org-babel-load-languages '((lisp . t)))
 
 
