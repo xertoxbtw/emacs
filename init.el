@@ -11,10 +11,9 @@
   (require 'use-package))
 
 ;; Evil mode
-(use-package 
-  undo-fu)
-(use-package 
-  evil 
+(use-package undo-fu
+  :ensure t)
+(use-package evil 
   :ensure t 
   :demand t 
   :bind (("<escape>" . keyboard-escape-quit)) 
@@ -23,27 +22,23 @@
   :config (evil-mode 1))
 
 ;; Which Key
-(use-package 
-  which-key 
+(use-package which-key 
   :ensure t 
   :config (which-key-mode 1))
 
 ;; All the icons
-(use-package 
-  all-the-icons
+(use-package all-the-icons
+  :ensure t
   :if (display-graphic-p))
 
 ;; Geiser
-(use-package 
-  geiser 
+(use-package geiser 
   :ensure t)
-(use-package 
-  geiser-guile 
+(use-package geiser-guile 
   :ensure t)
 
 ;; Dashboard
-(use-package 
-  dashboard 
+(use-package dashboard 
   :ensure t 
   :config (dashboard-setup-startup-hook) 
   (setq dashboard-banner-logo-title "GNU Emacs") 
@@ -53,8 +48,7 @@
   (setq dashboard-items '()))
 
 ;; Slime
-(use-package 
-  slime 
+(use-package sly 
   :ensure t 
   :config (setq inferior-lisp-program "sbcl"))
 
@@ -69,26 +63,12 @@
 (use-package orgtbl-aggregate
   :ensure t)
 
-;; C-Sharp Mode
-(use-package csharp-mode
-  :ensure t)
-
-;; Lsp Mode
-(use-package lsp-mode
+;; Eglot
+(use-package eglot
   :ensure t
-  :init
-  (setq lsp-keymap-prefix "C-c l")
-  :hook ((c-mode . lsp)
-		 (c++-mode . lsp)
-		 (csharp-mode . lsp)
-         (lsp-mode . lsp-enable-which-key-integration))
-  :bind (("M-f" . lsp-format-buffer))
-  :commands lsp)
-
-;; Company Mode
-(use-package company
-  :ensure t
-  :hook ((lsp-mode . company-mode)))
+  :hook ((c-mode . eglot-ensure)
+         (c++-mode . eglot-ensure))
+  :bind (("M-f" . eglot-format-buffer)))
 
 ;; Switch Window
 (use-package switch-window
@@ -96,6 +76,7 @@
   :bind (("C-x o" . switch-window))
   :config
   (setq switch-window-input-style 'minibuffer))
+
 
 ;; Magit
 (use-package magit
@@ -125,6 +106,8 @@
 (setq-default indent-tabs-mode t)
 (setq backward-delete-char-untabify-method 'nil)
 (setq use-dialog-box nil)
+(define-key evil-normal-state-map (kbd "u") nil)
+(setq tab-always-indent 'complete)
 (setq electric-pair-pairs '((?\{ . ?\}) 
 							(?\( . ?\)) 
 							(?\[ . ?\]) 
