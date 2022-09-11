@@ -10,6 +10,14 @@
 (eval-when-compile 
   (require 'use-package))
 
+;; Auto Update
+(use-package auto-package-update
+   :ensure t
+   :config
+   (setq auto-package-update-delete-old-versions t
+         auto-package-update-interval 4)
+   (auto-package-update-maybe))
+
 ;; Evil mode
 (use-package undo-fu
   :ensure t)
@@ -77,6 +85,9 @@
   :config
   (setq switch-window-input-style 'minibuffer))
 
+;; Web Mode
+(use-package web-mode
+  :ensure t)
 
 ;; Magit
 (use-package magit
