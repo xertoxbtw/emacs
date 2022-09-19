@@ -12,11 +12,11 @@
 
 ;; Auto Update
 (use-package auto-package-update
-   :ensure t
-   :config
-   (setq auto-package-update-delete-old-versions t
-         auto-package-update-interval 4)
-   (auto-package-update-maybe))
+  :ensure t
+  :config
+  (setq auto-package-update-delete-old-versions t
+		auto-package-update-interval 4)
+  (auto-package-update-maybe))
 
 ;; Evil mode
 (use-package undo-fu
@@ -75,7 +75,7 @@
 (use-package eglot
   :ensure t
   :hook ((c-mode . eglot-ensure)
-         (c++-mode . eglot-ensure))
+		 (c++-mode . eglot-ensure))
   :bind (("M-f" . eglot-format-buffer)))
 
 ;; Switch Window
@@ -87,7 +87,8 @@
 
 ;; Web Mode
 (use-package web-mode
-  :ensure t)
+  :ensure t
+  :hook html-mode)
 
 ;; Magit
 (use-package magit
@@ -131,12 +132,15 @@
 (global-prettify-symbols-mode +1)
 (setq org-agenda-files '("~/David/org"))
 
+(add-to-list 'auto-mode-alist
+			 '("\\.php\\'" . (lambda ()
+							   (web-mode))))
 
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes '("org-plain-latex" "\\documentclass{article}
-           [NO-DEFAULT-PACKAGES]
-           [PACKAGES]
-           [EXTRA]" ("\\section{%s}" . "\\section*{%s}") 
+		   [NO-DEFAULT-PACKAGES]
+		   [PACKAGES]
+		   [EXTRA]" ("\\section{%s}" . "\\section*{%s}") 
 		   ("\\subsection{%s}" . "\\subsection*{%s}") 
 		   ("\\subsubsection{%s}" . "\\subsubsection*{%s}") 
 		   ("\\paragraph{%s}" . "\\paragraph*{%s}") 
