@@ -56,11 +56,19 @@
   (interactive)
   (let* ((path (if (null path) (car org-agenda-files) path))
 		 (files (directory-files path nil "^[^.]\\w+"))
-		 (selected (selection-menu "" files)))
+		 (selected (selection-menu "org-interface" files)))
 	(if (null selected) nil
 	  (let ((fullpath (concat path "/" selected)))
 		(if (file-directory-p fullpath)
 			(org-interface fullpath)
 		  (find-file fullpath))))))
 
+(defun org-language ()
+  (interactive)
+  (let* ((languages '("English" "Deutsch" "Italiano"))
+		 (selected (downcase (selection-menu "org-language" languages))))
+	(flyspell-mode)
+	(ispell-change-dictionary selected)))
+
 (provide 'org-interface)
+(provide 'org-language)

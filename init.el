@@ -24,7 +24,7 @@
 (use-package evil 
   :ensure t 
   :demand t 
-  :bind (("<escape>" . keyboard-escape-quit)) 
+  :bind (("<escape>" . keyboard-escape-quit))
   :init (setq evil-want-keybinding nil) 
   (setq evil-undo-system 'undo-fu) 
   :config (evil-mode 1))
@@ -39,18 +39,12 @@
   :ensure t
   :if (display-graphic-p))
 
-;; Geiser
-(use-package geiser 
-  :ensure t)
-(use-package geiser-guile 
-  :ensure t)
-
 ;; Dashboard
 (use-package dashboard 
   :ensure t 
   :config (dashboard-setup-startup-hook) 
-  (setq dashboard-banner-logo-title "GNU Emacs") 
-  (setq dashboard-startup-banner "~/.config/emacs/banner.png") 
+  (setq dashboard-banner-logo-title "GNU Emacs")
+  (setq dashboard-startup-banner "~/.config/emacs/banner.png")
   (setq dashboard-center-content t) 
   (setq dashboard-show-shortcuts nil) 
   (setq dashboard-items '()))
@@ -71,12 +65,6 @@
 (use-package orgtbl-aggregate
   :ensure t)
 
-;; Eglot
-(use-package eglot
-  :ensure t
-  :hook ((c-mode . eglot-ensure)
-		 (c++-mode . eglot-ensure))
-  :bind (("M-f" . eglot-format-buffer)))
 
 ;; Switch Window
 (use-package switch-window
@@ -85,19 +73,70 @@
   :config
   (setq switch-window-input-style 'minibuffer))
 
-;; Web Mode
-(use-package web-mode
-  :ensure t
-  :hook html-mode)
-
 ;; Magit
 (use-package magit
   :ensure t)
 
+;; Web-Mode
+(use-package web-mode
+  :ensure t
+  :hook ((html-mode . web-mode)))
+
+;; Auctex
+(use-package tex
+  :defer t
+  :ensure auctex
+  :config
+  (setq TeX-auto-save t))
+
+;; Eglot
+(use-package eglot
+  :ensure t
+  :bind (("M-f" . eglot-format-buffer)))
+
+;; Corfu
+(use-package corfu
+  ;; Optional customizations
+  :custom
+  (corfu-cycle t)                  ; Allows cycling through candidates
+  (corfu-auto t)                   ; Enable auto completion
+  (corfu-auto-prefix 2)            ; Enable auto completion
+  (corfu-auto-delay 0.0)           ; Enable auto completion
+  (corfu-quit-at-boundary 'separator)
+  (corfu-echo-documentation 0.25)   ; Enable auto completion
+  (corfu-preview-current 'insert)   ; Do not preview current candidate
+  (corfu-preselect-first nil)
+
+  ;; Optionally use TAB for cycling, default is `corfu-complete'.
+  :bind (:map corfu-map
+			  ("M-SPC" . corfu-insert-separator)
+			  ("TAB"     . corfu-next)
+			  ([tab]     . corfu-next)
+			  ("S-TAB"   . corfu-previous)
+			  ([backtab] . corfu-previous)
+			  ("S-<return>" . corfu-insert)
+			  ("RET"     . nil) ;; leave my enter alone!
+			  )
+
+  :init
+  (global-corfu-mode)
+  (corfu-history-mode)
+  :config
+  (add-hook 'eshell-mode-hook
+			(lambda () (setq-local corfu-quit-at-boundary t
+							  corfu-quit-no-match t
+							  corfu-auto nil)
+			  (corfu-mode))))
+
+
 ;; Org Interface
-(load-file "~/.config/emacs/org-interface.el")
+(load-file "~/.config/emacs/org-tools.el")
 
 ;; Base Configuration
+(add-to-list 'auto-mode-alist
+			 '("\\.php\\'" . (lambda ()
+							   (web-mode))))
+
 (load-theme 'dichromacy t)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -116,7 +155,7 @@
 (setq c-basic-offset tab-width)
 (setq-default electric-indent-inhibit t)
 (setq-default indent-tabs-mode t)
-(setq backward-delete-char-untabify-method 'nil)
+(setq backward-delete-char-untabify-method nil)
 (setq use-dialog-box nil)
 (define-key evil-normal-state-map (kbd "u") nil)
 (setq tab-always-indent 'complete)
@@ -130,11 +169,8 @@
 (defalias 'open 'find-file)
 (defalias 'clean 'eshell/clear-scrollback)
 (global-prettify-symbols-mode +1)
+(add-hook 'c-mode-hook 'eglot-ensure)
 (setq org-agenda-files '("~/David/org"))
-
-(add-to-list 'auto-mode-alist
-			 '("\\.php\\'" . (lambda ()
-							   (web-mode))))
 
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes '("org-plain-latex" "\\documentclass{article}
@@ -150,7 +186,7 @@
 (setq org-latex-toc-command "\\tableofcontents \\clearpage")
 (org-babel-do-load-languages 'org-babel-load-languages '((lisp . t)))
 
-
+(add-hook 'org-mode-hook 'org-language)
 
 ;; Custom Functions
 (defun new () 
@@ -158,3 +194,4 @@
   (let ((buffer (generate-new-buffer "<Unsaved File>"))) 
 	(switch-to-buffer buffer) 
 	(setq-local is-new-file-buffer t)))
+
