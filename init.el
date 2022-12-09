@@ -44,7 +44,7 @@
   :ensure t 
   :config (dashboard-setup-startup-hook) 
   (setq dashboard-banner-logo-title "GNU Emacs")
-  (setq dashboard-startup-banner "~/.config/emacs/banner.png")
+  ;;(setq dashboard-startup-banner "~/.config/emacs/banner.png")
   (setq dashboard-center-content t) 
   (setq dashboard-show-shortcuts nil) 
   (setq dashboard-items '()))
