@@ -55,15 +55,15 @@
   :config (setq inferior-lisp-program "sbcl"))
 
 ;; Org Mode
-(setq org-hide-emphasis-markers t)
-(use-package 
-  org-bullets 
-  :ensure t 
-  :config (add-hook 'org-mode-hook 
-					(lambda () 
-					  (org-bullets-mode 1))))
-(use-package orgtbl-aggregate
-  :ensure t)
+;;(setq org-hide-emphasis-markers t)
+;;(use-package 
+;;  org-bullets 
+;;  :ensure t 
+;;  :config (add-hook 'org-mode-hook 
+;;					(lambda () 
+;;					  (org-bullets-mode 1))))
+;;(use-package orgtbl-aggregate
+;;  :ensure t)
 
 
 ;; Switch Window
@@ -96,6 +96,7 @@
 
 ;; Corfu
 (use-package corfu
+  :ensure t
   ;; Optional customizations
   :custom
   (corfu-cycle t)                  ; Allows cycling through candidates
@@ -128,6 +129,12 @@
 							  corfu-auto nil)
 			  (corfu-mode))))
 
+(use-package gruber-darker-theme
+  :ensure t)
+
+(use-package neotree
+  :ensure t
+  :config (evil-set-initial-state 'neotree-mode 'emacs))
 
 ;; Org Interface
 (load-file "~/.config/emacs/org-tools.el")
@@ -137,11 +144,13 @@
 			 '("\\.php\\'" . (lambda ()
 							   (web-mode))))
 
-(load-theme 'dichromacy t)
+(load-theme 'gruber-darker t)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (global-display-line-numbers-mode 1)
+(setq display-line-numbers-type 'relative)
+
 (show-paren-mode 1)
 (setq inhibit-startup-screen t)
 (setq inhibit-startup-message t)
