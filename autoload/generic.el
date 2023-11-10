@@ -8,6 +8,7 @@
 (setq visible-bell 1)
 (setq use-dialog-box nil)
 
+
 ;; Aliases
 (defalias 'open 'find-file)
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -36,3 +37,4 @@
 (global-set-key (kbd "C-<Hangul_Hanja>") 'ignore)
 (global-set-key (kbd "M-<Hangul_Hanja>") 'ignore)
 
+(prefer-coding-system 'utf-8-unix)

@@ -14,8 +14,10 @@
   :demand t 
   :bind (("<escape>" . keyboard-escape-quit)
 		 ("<f5>" . make))
-  :init (setq evil-want-keybinding nil) 
-  (setq evil-undo-system 'undo-fu) 
+  :init
+  (setq evil-want-keybinding nil) 
+  (setq evil-undo-system 'undo-fu)
+  (define-key evil-normal-state-map (kbd ".") 'nil)
   :config (evil-mode 1))
 
 ;; Which Key
@@ -82,3 +84,12 @@
 (use-package web-mode
   :ensure t)
 (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
+
+;; ample-theme
+(use-package ample-theme 
+  :ensure t
+  :config (load-theme 'ample t))
+
+(use-package powerline
+  :ensure t
+  :config (powerline-center-evil-theme))
