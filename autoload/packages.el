@@ -13,7 +13,8 @@
   :ensure t 
   :demand t 
   :bind (("<escape>" . keyboard-escape-quit)
-		 ("<f5>" . make))
+		 ("<f5>" . make-run)
+		 ("<f6>" . make))
   :init
   (setq evil-want-keybinding nil) 
   (setq evil-undo-system 'undo-fu)
@@ -57,39 +58,88 @@
   :config
   (add-hook 'eshell-mode-hook
 			(lambda () (setq-local corfu-quit-at-boundary t
-								   corfu-quit-no-match t
-								   corfu-auto nil)
+							  corfu-quit-no-match t
+							  corfu-auto nil)
 			  (corfu-mode))))
 
 ;; Eglot
 (use-package eglot
   :ensure t
-  :hook (c-mode . eglot-ensure)
+  ;; :hook (c-mode . eglot-ensure)
   :hook (c++-mode . eglot-ensure)
   :hook (python-mode . eglot-ensure)
-  :hook (javascript-mode . eglot-ensure)
-  :bind ("M-f" . eglot-format-buffer))
+  :hook (javascript-mode . eglot-ensure))
+;; :bind ("M-f" . eglot-format-buffer))
+
+;; Clang-Format
+(use-package clang-format+
+  :ensure t
+  :bind ("M-f" . clang-format-buffer))
 
 ;; Sly
 (use-package sly
   :ensure t
   :init
-  (setq inferior-lisp-program "/usr/bin/sbcl"))
-
+  (setq inferior-lisp-program "/usr/bin/sbcl")
+  :bind (:map evil-normal-state-map
+			  ("C-<return>" . common-lisp-hyperspec)))
+ 
 ;; Magit
 (use-package magit
   :ensure t)
 
 ;; web-mode
 (use-package web-mode
-  :ensure t)
-(add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
-
-;; ample-theme
-(use-package ample-theme 
   :ensure t
-  :config (load-theme 'ample t))
+  :config
+  (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode)))
 
-(use-package powerline
+;; adwaita-dark-theme
+(use-package adwaita-dark-theme
   :ensure t
-  :config (powerline-center-evil-theme))
+  :config (load-theme 'adwaita-dark t))
+
+;; mood-line
+(use-package mood-line
+  :ensure t
+  :config
+  (mood-line-mode)
+  :custom
+  (mood-line-glyph-alist mood-line-glyphs-unicode))
+
+;; swiper
+(use-package swiper
+  :ensure t
+  :bind ("C-s" . 'swiper))
+
+;; switch-window
+(use-package switch-window
+  :ensure t
+  :config
+  (setq switch-window-input-style 'minibuffer)
+  (setq switch-window-increase 4)
+  (setq switch-window-threshold 2)
+  (setq switch-window-shortcut-style 'qwerty)
+  (setq switch-window-qwerty-shortcuts
+		'("a" "s" "d" "f" "j" "k" "l"))
+  :bind
+  ([remap other-window] . switch-window))
+
+;; glsl-mode
+(use-package glsl-mode
+  :ensure t
+  :config
+  (progn
+	(add-to-list 'auto-mode-alist '("\\.vertex\\'" . glsl-mode))
+	(add-to-list 'auto-mode-alist '("\\.fragment\\'" . glsl-mode))))
+
+(use-package rainbow-delimiters
+  :ensure t
+  :config
+  (progn
+	(add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)))
+
+(use-package elcord
+  :ensure t
+  :config
+  (elcord-mode))
